@@ -1,0 +1,949 @@
+{
+  "schema_version": "0.1",
+  "graph_name": "contemplative-neuroscience-graph",
+  "description": "Knowledge graph mapping contemplative practices to phenomenological states, neural signatures, brain networks, and cognitive mechanisms, with citation provenance and explicit evidence-strength annotation. Designed to interoperate with darshana-graph and buddhist-philosophy-graph as a companion ontology (shared node-id conventions, same evidence_strength vocabulary).",
+  "node_types": {
+    "Tradition": {
+      "properties": [
+        "id",
+        "name",
+        "lineage_family",
+        "region"
+      ],
+      "example": {
+        "id": "trad:nyingma_dzogchen",
+        "name": "Nyingma Dzogchen",
+        "lineage_family": "Tibetan Vajrayana",
+        "region": "Tibet"
+      }
+    },
+    "Practice": {
+      "properties": [
+        "id",
+        "name",
+        "aliases",
+        "phenomenological_focus",
+        "traditional_objective"
+      ],
+      "example": {
+        "id": "prac:hwadu_investigation",
+        "name": "Hwadu (kanhwa Seon) investigation",
+        "aliases": [
+          "kong-an investigation",
+          "critical phrase meditation"
+        ],
+        "phenomenological_focus": "sustained generative doubt (uisim)",
+        "traditional_objective": "breakthrough (gyeonseong) via resolution of great doubt"
+      }
+    },
+    "PhenomenologicalState": {
+      "properties": [
+        "id",
+        "name",
+        "tradition_specific_term",
+        "description"
+      ],
+      "example": {
+        "id": "phen:rigpa",
+        "name": "Rigpa",
+        "tradition_specific_term": "rig pa (Tib.)",
+        "description": "nondual, open, self-luminous awareness"
+      }
+    },
+    "NeuralSignature": {
+      "properties": [
+        "id",
+        "name",
+        "modality",
+        "description",
+        "measurement_notes"
+      ],
+      "example": {
+        "id": "sig:dan_dmn_anticorrelation",
+        "name": "DAN-DMN anti-correlation",
+        "modality": "fMRI",
+        "description": "stable anti-correlated activity between Dorsal Attention Network and Default Mode Network",
+        "measurement_notes": "task-based fMRI, resting-state contrast"
+      }
+    },
+    "NetworkNode": {
+      "properties": [
+        "id",
+        "name",
+        "abbreviation",
+        "anatomical_location"
+      ],
+      "example": {
+        "id": "net:precuneus",
+        "name": "Precuneus",
+        "abbreviation": "PCu",
+        "anatomical_location": "medial parietal lobule"
+      }
+    },
+    "CognitiveMechanism": {
+      "properties": [
+        "id",
+        "name",
+        "framework",
+        "description"
+      ],
+      "example": {
+        "id": "mech:signal_to_noise",
+        "name": "Signal-to-noise ratio hypothesis",
+        "framework": "predictive processing / affective neuroscience",
+        "description": "sensory and verbal gating raises the relative salience of self-generated affective signal"
+      }
+    },
+    "Citation": {
+      "properties": [
+        "id",
+        "authors",
+        "year",
+        "venue",
+        "doi_or_url",
+        "sample_size",
+        "study_design"
+      ],
+      "example": {
+        "id": "cite:chowdhury_2024_neuroimage",
+        "authors": "Chowdhury et al.",
+        "year": 2024,
+        "venue": "NeuroImage",
+        "doi_or_url": "10.1016/j.neuroimage.2024.120973",
+        "sample_size": "n=1 (intensively sampled)",
+        "study_design": "case study, multimodal 7T fMRI-EEG"
+      }
+    },
+    "CognitiveOperation": {
+      "properties": [
+        "id",
+        "name",
+        "description"
+      ],
+      "description": "A layer sitting between Practice and NeuralSignature. Different traditions can share a cognitive operation (and therefore show similar low-level neural signatures) while remaining phenomenologically and doctrinally distinct — this is what makes Young et al. 2021's null result on cross-tradition power-spectra differences intelligible rather than a contradiction of the taxonomy.",
+      "example": {
+        "id": "cogop:attentional_narrowing",
+        "name": "Attentional narrowing",
+        "description": "progressive restriction of attention to a single fixed object"
+      }
+    },
+    "Finding": {
+      "properties": [
+        "id",
+        "name",
+        "description",
+        "implication"
+      ],
+      "description": "An empirical result recorded as its own node (rather than folded silently into an edge) specifically so it can be attached as a caveat to claims it complicates, e.g. an orthogonality claim that a null result argues against.",
+      "example": {
+        "id": "finding:young2021_no_power_spectra_diff",
+        "name": "No cross-tradition power-spectra differences",
+        "description": "six-tradition EEG comparison found no significant power-spectra differences between meditation styles",
+        "implication": "cautions against treating traditions as having cleanly separable EEG signatures"
+      }
+    }
+  },
+  "edge_types": {
+    "PRACTICED_WITHIN": {
+      "from": "Practice",
+      "to": "Tradition"
+    },
+    "PRODUCES": {
+      "from": "Practice",
+      "to": "PhenomenologicalState"
+    },
+    "CORRELATES_WITH": {
+      "from": "PhenomenologicalState",
+      "to": "NeuralSignature",
+      "properties": [
+        "evidence_strength"
+      ]
+    },
+    "MEDIATED_BY": {
+      "from": "NeuralSignature",
+      "to": "NetworkNode",
+      "properties": [
+        "evidence_strength"
+      ]
+    },
+    "EXPLAINED_BY": {
+      "from": "NeuralSignature",
+      "to": "CognitiveMechanism",
+      "properties": [
+        "evidence_strength"
+      ]
+    },
+    "EVIDENCED_BY": {
+      "from": "*",
+      "to": "Citation"
+    },
+    "ORTHOGONAL_TO": {
+      "from": "Practice",
+      "to": "Practice",
+      "description": "taxonomically distinct per the orthogonality criterion"
+    },
+    "ANALOGOUS_TO": {
+      "from": "Practice",
+      "to": "Practice",
+      "properties": [
+        "confidence"
+      ],
+      "description": "used when a practice's own neural evidence is thin and a nearer-evidenced practice is used as a provisional proxy"
+    },
+    "PART_OF": {
+      "from": "*",
+      "to": "Tradition"
+    },
+    "EMPLOYS": {
+      "from": "Practice",
+      "to": "CognitiveOperation",
+      "description": "the cognitive-operations axis proposed as a companion to the practice-level taxonomy; multiple practices/traditions can share an operation"
+    },
+    "CAVEATED_BY": {
+      "from": "*",
+      "to": "Finding",
+      "description": "attaches an empirical result as a qualifier to any claim or edge it complicates, without deleting the original claim"
+    }
+  },
+  "evidence_strength_vocabulary": [
+    "high",
+    "moderate",
+    "low",
+    "theoretical_only"
+  ],
+  "nodes": [
+    {
+      "id": "trad:theravada",
+      "type": "Tradition",
+      "name": "Theravada",
+      "lineage_family": "Early Buddhist",
+      "region": "South/Southeast Asia"
+    },
+    {
+      "id": "trad:vajrayana_tibetan",
+      "type": "Tradition",
+      "name": "Tibetan Vajrayana",
+      "lineage_family": "Tantric Buddhist",
+      "region": "Tibet"
+    },
+    {
+      "id": "trad:nyingma_dzogchen",
+      "type": "Tradition",
+      "name": "Nyingma Dzogchen",
+      "lineage_family": "Tibetan Vajrayana",
+      "region": "Tibet"
+    },
+    {
+      "id": "trad:sufi_islam",
+      "type": "Tradition",
+      "name": "Sufism",
+      "lineage_family": "Islamic contemplative",
+      "region": "Middle East / South Asia"
+    },
+    {
+      "id": "trad:korean_seon",
+      "type": "Tradition",
+      "name": "Korean Seon (Zen)",
+      "lineage_family": "Chan/Zen",
+      "region": "Korea"
+    },
+    {
+      "id": "trad:jodo_shinshu",
+      "type": "Tradition",
+      "name": "Jōdo Shinshū",
+      "lineage_family": "Pure Land Buddhist",
+      "region": "Japan"
+    },
+    {
+      "id": "prac:samatha_jhana",
+      "type": "Practice",
+      "name": "Samatha Jhana",
+      "phenomenological_focus": "sensory exclusion, concentrative absorption",
+      "traditional_objective": "rupa/arupa jhana attainment"
+    },
+    {
+      "id": "prac:vipassana",
+      "type": "Practice",
+      "name": "Vipassana",
+      "phenomenological_focus": "open monitoring, somatic tracking",
+      "traditional_objective": "insight into anicca/dukkha/anatta"
+    },
+    {
+      "id": "prac:dzogchen_rigpa_recognition",
+      "type": "Practice",
+      "name": "Dzogchen Rigpa recognition",
+      "phenomenological_focus": "nondual open awareness",
+      "traditional_objective": "direct recognition of rigpa"
+    },
+    {
+      "id": "prac:sufi_dhikr",
+      "type": "Practice",
+      "name": "Sufi Dhikr",
+      "phenomenological_focus": "rhythmic devotional repetition",
+      "traditional_objective": "fana/baqa"
+    },
+    {
+      "id": "prac:deity_yoga",
+      "type": "Practice",
+      "name": "Vajrayana Deity Yoga",
+      "phenomenological_focus": "somatic visual self-generation as deity",
+      "traditional_objective": "purified identity transformation"
+    },
+    {
+      "id": "prac:hwadu_investigation",
+      "type": "Practice",
+      "name": "Hwadu (kanhwa Seon) investigation",
+      "aliases": [
+        "kong-an investigation"
+      ],
+      "phenomenological_focus": "sustained generative doubt (uisim)",
+      "traditional_objective": "breakthrough (gyeonseong)"
+    },
+    {
+      "id": "prac:general_seon_zazen",
+      "type": "Practice",
+      "name": "General seated Seon/Zazen (undifferentiated)",
+      "phenomenological_focus": "stabilized non-habituating attention",
+      "traditional_objective": "settling and clarity"
+    },
+    {
+      "id": "prac:nembutsu_recitation",
+      "type": "Practice",
+      "name": "Nembutsu recitation (Namu Amida Butsu)",
+      "phenomenological_focus": "attentional simplification via repeated verbal object; doctrinally framed as effortless",
+      "traditional_objective": "expression of entrusting (shinjin), birth in the Pure Land via tariki"
+    },
+    {
+      "id": "phen:piti_sukha",
+      "type": "PhenomenologicalState",
+      "name": "Pīti/Sukha",
+      "description": "physical joy and mental happiness in rupa jhana"
+    },
+    {
+      "id": "phen:anicca_insight",
+      "type": "PhenomenologicalState",
+      "name": "Anicca insight",
+      "description": "direct perception of impermanence of arising/passing sensations"
+    },
+    {
+      "id": "phen:rigpa",
+      "type": "PhenomenologicalState",
+      "name": "Rigpa",
+      "description": "nondual, self-luminous open awareness"
+    },
+    {
+      "id": "phen:fana",
+      "type": "PhenomenologicalState",
+      "name": "Fanā'",
+      "description": "transient collapse of egoic self-structure"
+    },
+    {
+      "id": "phen:illusory_deity_ownership",
+      "type": "PhenomenologicalState",
+      "name": "Illusory deity-body ownership",
+      "description": "whole-body identification with visualized deity form"
+    },
+    {
+      "id": "phen:uisim_doubt",
+      "type": "PhenomenologicalState",
+      "name": "Uisim (great doubt)",
+      "description": "concentrated existential doubt sustained toward a hwadu"
+    },
+    {
+      "id": "phen:shinjin_entrusting",
+      "type": "PhenomenologicalState",
+      "name": "Shinjin (entrusting faith)",
+      "description": "doctrinally non-effortful state of gratitude/entrusting in Amida's Vow"
+    },
+    {
+      "id": "sig:meditation_spindles_isw",
+      "type": "NeuralSignature",
+      "modality": "EEG",
+      "name": "Meditation spindles & infraslow waves",
+      "evidence_strength": "high"
+    },
+    {
+      "id": "sig:dan_dmn_anticorrelation",
+      "type": "NeuralSignature",
+      "modality": "fMRI",
+      "name": "DAN-DMN anti-correlation",
+      "evidence_strength": "high"
+    },
+    {
+      "id": "sig:dmn_tpn_coactivation",
+      "type": "NeuralSignature",
+      "modality": "fMRI",
+      "name": "DMN-TPN co-activation via precuneus",
+      "evidence_strength": "moderate"
+    },
+    {
+      "id": "sig:delta_theta_entrainment",
+      "type": "NeuralSignature",
+      "modality": "EEG",
+      "name": "Delta-theta neural entrainment (dhikr)",
+      "evidence_strength": "low"
+    },
+    {
+      "id": "sig:gamma_occipital_bursts",
+      "type": "NeuralSignature",
+      "modality": "EEG",
+      "name": "High-frequency gamma & occipital spike-wave bursts (deity yoga/gtum mo)",
+      "evidence_strength": "low"
+    },
+    {
+      "id": "sig:alpha_predominance_zazen",
+      "type": "NeuralSignature",
+      "modality": "EEG",
+      "name": "Alpha predominance / non-habituating alpha-blocking (Zazen, general)",
+      "evidence_strength": "moderate"
+    },
+    {
+      "id": "sig:medial_frontal_gyrus_activation",
+      "type": "NeuralSignature",
+      "modality": "fMRI",
+      "name": "Medial frontal gyrus activation (nembutsu recitation)",
+      "evidence_strength": "low"
+    },
+    {
+      "id": "sig:hwadu_specific_signature_unknown",
+      "type": "NeuralSignature",
+      "modality": "none reported",
+      "name": "Hwadu-investigation-specific signature (undetermined)",
+      "evidence_strength": "theoretical_only"
+    },
+    {
+      "id": "net:dmn",
+      "type": "NetworkNode",
+      "name": "Default Mode Network",
+      "abbreviation": "DMN"
+    },
+    {
+      "id": "net:dan",
+      "type": "NetworkNode",
+      "name": "Dorsal Attention Network",
+      "abbreviation": "DAN"
+    },
+    {
+      "id": "net:tpn",
+      "type": "NetworkNode",
+      "name": "Task-Positive Network",
+      "abbreviation": "TPN"
+    },
+    {
+      "id": "net:sn",
+      "type": "NetworkNode",
+      "name": "Salience Network",
+      "abbreviation": "SN"
+    },
+    {
+      "id": "net:fpn",
+      "type": "NetworkNode",
+      "name": "Frontoparietal Control Network",
+      "abbreviation": "FPN"
+    },
+    {
+      "id": "net:precuneus",
+      "type": "NetworkNode",
+      "name": "Precuneus"
+    },
+    {
+      "id": "net:nac",
+      "type": "NetworkNode",
+      "name": "Nucleus Accumbens",
+      "abbreviation": "NAc"
+    },
+    {
+      "id": "net:medial_frontal_gyrus",
+      "type": "NetworkNode",
+      "name": "Medial Frontal Gyrus"
+    },
+    {
+      "id": "mech:signal_to_noise",
+      "type": "CognitiveMechanism",
+      "name": "Signal-to-noise ratio hypothesis",
+      "framework": "predictive processing"
+    },
+    {
+      "id": "mech:cortical_hierarchy_deconstruction",
+      "type": "CognitiveMechanism",
+      "name": "Cortical hierarchy deconstruction",
+      "framework": "predictive processing"
+    },
+    {
+      "id": "mech:illusory_ownership",
+      "type": "CognitiveMechanism",
+      "name": "Illusory ownership transfer",
+      "framework": "predictive processing / body-schema"
+    },
+    {
+      "id": "mech:tariki_paradox",
+      "type": "CognitiveMechanism",
+      "name": "Tariki (other-power) paradox",
+      "framework": "doctrinal vs. neural mismatch hypothesis",
+      "description": "candidate mechanism explaining a possible mismatch between doctrinally-claimed effortlessness and an effortful/concentrative neural signature; unresolved"
+    },
+    {
+      "id": "cite:kasamatsu_hirai_1966",
+      "type": "Citation",
+      "authors": "Kasamatsu A, Hirai T.",
+      "year": 1966,
+      "venue": "Psychiatry and Clinical Neurosciences",
+      "doi_or_url": "10.1111/j.1440-1819.1966.tb02646.x",
+      "sample_size": "n=48",
+      "study_design": "EEG, Zazen, priests and disciples"
+    },
+    {
+      "id": "cite:juingong_2021",
+      "type": "Citation",
+      "authors": "PMC8835034 study team",
+      "year": 2021,
+      "venue": "PMC",
+      "doi_or_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8835034/",
+      "sample_size": "n=23",
+      "study_design": "4-channel consumer EEG, Hanmaum Seon Center"
+    },
+    {
+      "id": "cite:nembutsu_fmri_2008",
+      "type": "Citation",
+      "authors": "study team (Oita University)",
+      "year": 2008,
+      "venue": "PubMed 18597227",
+      "doi_or_url": "https://pubmed.ncbi.nlm.nih.gov/18597227/",
+      "sample_size": "n=8",
+      "study_design": "fMRI, highly trained Japanese monks"
+    },
+    {
+      "id": "cite:young_2021_frontiers",
+      "type": "Citation",
+      "authors": "Young JH, Arterberry ME, Martin JP.",
+      "year": 2021,
+      "venue": "Frontiers in Human Neuroscience 15:628417",
+      "doi_or_url": "10.3389/fnhum.2021.628417",
+      "sample_size": "highly skilled meditators, 6 groups (shamatha, vipassana, zazen, dzogchen, tonglen, visualization) vs. mind-wandering control",
+      "study_design": "between-group EEG (Lempel-Ziv complexity + power spectra)"
+    },
+    {
+      "id": "cogop:attentional_narrowing",
+      "type": "CognitiveOperation",
+      "name": "Attentional narrowing",
+      "description": "progressive restriction of attention to a single fixed object"
+    },
+    {
+      "id": "cogop:attentional_broadening",
+      "type": "CognitiveOperation",
+      "name": "Attentional broadening / open monitoring",
+      "description": "non-selective, flowing tracking of arising sensory/cognitive content"
+    },
+    {
+      "id": "cogop:subject_object_collapse",
+      "type": "CognitiveOperation",
+      "name": "Subject-object collapse",
+      "description": "dissolution of the perceiver/perceived division"
+    },
+    {
+      "id": "cogop:self_model_replacement",
+      "type": "CognitiveOperation",
+      "name": "Self-model replacement",
+      "description": "active substitution of the default bodily/identity self-model with a constructed one"
+    },
+    {
+      "id": "cogop:affective_entrainment",
+      "type": "CognitiveOperation",
+      "name": "Affective/rhythmic entrainment",
+      "description": "rhythmic repetition (vocal, mental, or somatic) used to shift affective salience"
+    },
+    {
+      "id": "cogop:predictive_model_suppression",
+      "type": "CognitiveOperation",
+      "name": "Predictive model suppression",
+      "description": "gating of top-down predictive/conceptual processing"
+    },
+    {
+      "id": "cogop:metacognitive_monitoring",
+      "type": "CognitiveOperation",
+      "name": "Metacognitive monitoring",
+      "description": "sustained higher-order awareness of the state of attention/experience itself"
+    },
+    {
+      "id": "cogop:generative_doubt_holding",
+      "type": "CognitiveOperation",
+      "name": "Generative doubt-holding",
+      "description": "sustaining an unresolved paradox as an active engine of practice rather than resolving or ignoring it"
+    },
+    {
+      "id": "finding:young2021_no_power_spectra_diff",
+      "type": "Finding",
+      "name": "No cross-tradition EEG power-spectra differences (Young et al. 2021)",
+      "description": "In a direct six-tradition comparison (shamatha, vipassana, zazen, dzogchen, tonglen, visualization) against a shared mind-wandering control, Lempel-Ziv complexity differed between meditation and mind-wandering generally, but there were no significant power-spectra differences between the six meditation styles themselves; the authors attribute this partly to between-group heterogeneity and note only exploratory (not confirmatory) evidence of inter-practice differences.",
+      "implication": "directly cautions against reading ORTHOGONAL_TO edges in this graph as implying cleanly separable low-level EEG signatures; orthogonality here is best read as phenomenological/doctrinal, with neural separability an open empirical question rather than an established fact",
+      "evidenced_by": [
+        "cite:young_2021_frontiers"
+      ]
+    },
+    {
+      "id": "cite:samatha_eeg_2019_frontiers",
+      "type": "Citation",
+      "authors": "unspecified authors",
+      "year": 2019,
+      "venue": "Frontiers in Human Neuroscience (\"The Human Default Consciousness and Its Disruption\")",
+      "doi_or_url": "https://www.frontiersin.org/journals/human-neuroscience/articles/10.3389/fnhum.2019.00178/full",
+      "sample_size": "n=29 across 35 recordings",
+      "study_design": "EEG, experienced Samatha meditators"
+    },
+    {
+      "id": "cite:vipassana_dan_dmn_2021_pmc",
+      "type": "Citation",
+      "authors": "unspecified authors",
+      "year": 2021,
+      "venue": "PMC (\"Attention and Default Mode Network Assessments of Meditation Experience during Active Cognition and Rest\")",
+      "doi_or_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8144977/",
+      "sample_size": "not specified in source",
+      "study_design": "fMRI, experienced Vipassana practitioners"
+    },
+    {
+      "id": "cite:dzogchen_dmn_tpn_psychedelic_society",
+      "type": "Citation",
+      "authors": "unspecified authors",
+      "year": null,
+      "venue": "The Psychedelic Society (\"The Neuroscience of Enlightenment\")",
+      "doi_or_url": "https://psychedelicsociety.org.uk/read/the-neuroscience-of-enlightenment",
+      "sample_size": "not applicable, informal science communication article",
+      "study_design": "secondary source, not a peer reviewed primary study. flagged here specifically so this weaker sourcing is queryable rather than hidden"
+    },
+    {
+      "id": "cite:sufi_dhikr_harvard_osf",
+      "type": "Citation",
+      "authors": "Gul et al.",
+      "year": null,
+      "venue": "Harvard Meditation Research Program, OSF preprint (\"Extending the Scientific Study of Advanced Meditation Across Contemplative Traditions to Sufism within Islam\")",
+      "doi_or_url": "https://meditation.mgh.harvard.edu/files/Gul_26_OSF.pdf",
+      "sample_size": "not specified",
+      "study_design": "preprint, theoretical and review synthesis"
+    },
+    {
+      "id": "cite:deity_yoga_illusory_ownership_researchgate",
+      "type": "Citation",
+      "authors": "unspecified authors",
+      "year": null,
+      "venue": "ResearchGate (\"Raising the Buddha's Hand: Illusory Ownership in the Experience of Identification with a Supernatural Agent in Deity Yoga\")",
+      "doi_or_url": "unavailable, ResearchGate hosted",
+      "sample_size": "not specified",
+      "study_design": "not specified in source"
+    }
+  ],
+  "edges": [
+    {
+      "from": "prac:hwadu_investigation",
+      "to": "trad:korean_seon",
+      "type": "PRACTICED_WITHIN"
+    },
+    {
+      "from": "prac:nembutsu_recitation",
+      "to": "trad:jodo_shinshu",
+      "type": "PRACTICED_WITHIN"
+    },
+    {
+      "from": "prac:general_seon_zazen",
+      "to": "trad:korean_seon",
+      "type": "PRACTICED_WITHIN"
+    },
+    {
+      "from": "prac:hwadu_investigation",
+      "to": "phen:uisim_doubt",
+      "type": "PRODUCES"
+    },
+    {
+      "from": "prac:nembutsu_recitation",
+      "to": "phen:shinjin_entrusting",
+      "type": "PRODUCES"
+    },
+    {
+      "from": "phen:uisim_doubt",
+      "to": "sig:hwadu_specific_signature_unknown",
+      "type": "CORRELATES_WITH",
+      "evidence_strength": "theoretical_only"
+    },
+    {
+      "from": "prac:general_seon_zazen",
+      "to": "sig:alpha_predominance_zazen",
+      "type": "CORRELATES_WITH",
+      "evidence_strength": "moderate",
+      "evidenced_by": [
+        "cite:kasamatsu_hirai_1966",
+        "cite:juingong_2021"
+      ]
+    },
+    {
+      "from": "prac:nembutsu_recitation",
+      "to": "sig:medial_frontal_gyrus_activation",
+      "type": "CORRELATES_WITH",
+      "evidence_strength": "low",
+      "evidenced_by": [
+        "cite:nembutsu_fmri_2008"
+      ]
+    },
+    {
+      "from": "sig:medial_frontal_gyrus_activation",
+      "to": "net:medial_frontal_gyrus",
+      "type": "MEDIATED_BY",
+      "evidence_strength": "low"
+    },
+    {
+      "from": "sig:medial_frontal_gyrus_activation",
+      "to": "mech:tariki_paradox",
+      "type": "EXPLAINED_BY",
+      "evidence_strength": "theoretical_only"
+    },
+    {
+      "from": "prac:hwadu_investigation",
+      "to": "prac:vipassana",
+      "type": "ANALOGOUS_TO",
+      "confidence": "low",
+      "description": "provisional placement pending dedicated hwadu-phase EEG study; shares external-tracking DAN engagement but adds unmodeled conflict/doubt component"
+    },
+    {
+      "from": "prac:nembutsu_recitation",
+      "to": "prac:sufi_dhikr",
+      "type": "ANALOGOUS_TO",
+      "confidence": "low",
+      "description": "both rhythmic vocal/mental repetition aimed at self-attenuation; doctrinal architecture (tariki vs. cultivated nafs-qalb-ruh progression) differs sharply"
+    },
+    {
+      "from": "prac:samatha_jhana",
+      "to": "prac:vipassana",
+      "type": "ORTHOGONAL_TO",
+      "caveated_by": [
+        "finding:young2021_no_power_spectra_diff"
+      ]
+    },
+    {
+      "from": "prac:samatha_jhana",
+      "to": "prac:dzogchen_rigpa_recognition",
+      "type": "ORTHOGONAL_TO",
+      "caveated_by": [
+        "finding:young2021_no_power_spectra_diff"
+      ]
+    },
+    {
+      "from": "prac:vipassana",
+      "to": "prac:dzogchen_rigpa_recognition",
+      "type": "ORTHOGONAL_TO",
+      "caveated_by": [
+        "finding:young2021_no_power_spectra_diff"
+      ]
+    },
+    {
+      "from": "prac:samatha_jhana",
+      "to": "cogop:attentional_narrowing",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:samatha_jhana",
+      "to": "cogop:predictive_model_suppression",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:vipassana",
+      "to": "cogop:attentional_broadening",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:vipassana",
+      "to": "cogop:metacognitive_monitoring",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:dzogchen_rigpa_recognition",
+      "to": "cogop:subject_object_collapse",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:deity_yoga",
+      "to": "cogop:self_model_replacement",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:sufi_dhikr",
+      "to": "cogop:affective_entrainment",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:nembutsu_recitation",
+      "to": "cogop:affective_entrainment",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:hwadu_investigation",
+      "to": "cogop:generative_doubt_holding",
+      "type": "EMPLOYS"
+    },
+    {
+      "from": "prac:samatha_jhana",
+      "to": "finding:young2021_no_power_spectra_diff",
+      "type": "CAVEATED_BY"
+    },
+    {
+      "from": "prac:vipassana",
+      "to": "finding:young2021_no_power_spectra_diff",
+      "type": "CAVEATED_BY"
+    },
+    {
+      "from": "prac:dzogchen_rigpa_recognition",
+      "to": "finding:young2021_no_power_spectra_diff",
+      "type": "CAVEATED_BY"
+    },
+    {
+      "from": "prac:samatha_jhana",
+      "to": "trad:theravada",
+      "type": "PRACTICED_WITHIN"
+    },
+    {
+      "from": "prac:vipassana",
+      "to": "trad:theravada",
+      "type": "PRACTICED_WITHIN"
+    },
+    {
+      "from": "prac:dzogchen_rigpa_recognition",
+      "to": "trad:nyingma_dzogchen",
+      "type": "PRACTICED_WITHIN"
+    },
+    {
+      "from": "prac:sufi_dhikr",
+      "to": "trad:sufi_islam",
+      "type": "PRACTICED_WITHIN"
+    },
+    {
+      "from": "prac:deity_yoga",
+      "to": "trad:vajrayana_tibetan",
+      "type": "PRACTICED_WITHIN"
+    },
+    {
+      "from": "prac:samatha_jhana",
+      "to": "phen:piti_sukha",
+      "type": "PRODUCES"
+    },
+    {
+      "from": "prac:vipassana",
+      "to": "phen:anicca_insight",
+      "type": "PRODUCES"
+    },
+    {
+      "from": "prac:dzogchen_rigpa_recognition",
+      "to": "phen:rigpa",
+      "type": "PRODUCES"
+    },
+    {
+      "from": "prac:sufi_dhikr",
+      "to": "phen:fana",
+      "type": "PRODUCES"
+    },
+    {
+      "from": "prac:deity_yoga",
+      "to": "phen:illusory_deity_ownership",
+      "type": "PRODUCES"
+    },
+    {
+      "from": "prac:samatha_jhana",
+      "to": "sig:meditation_spindles_isw",
+      "type": "CORRELATES_WITH",
+      "evidence_strength": "high",
+      "evidenced_by": [
+        "cite:samatha_eeg_2019_frontiers",
+        "cite:chowdhury_2024_neuroimage"
+      ]
+    },
+    {
+      "from": "prac:vipassana",
+      "to": "sig:dan_dmn_anticorrelation",
+      "type": "CORRELATES_WITH",
+      "evidence_strength": "high",
+      "evidenced_by": [
+        "cite:vipassana_dan_dmn_2021_pmc"
+      ]
+    },
+    {
+      "from": "prac:dzogchen_rigpa_recognition",
+      "to": "sig:dmn_tpn_coactivation",
+      "type": "CORRELATES_WITH",
+      "evidence_strength": "moderate",
+      "evidenced_by": [
+        "cite:dzogchen_dmn_tpn_psychedelic_society"
+      ],
+      "note": "primary source here is an informal science communication article rather than a peer reviewed study, hence moderate rather than high despite the specificity of the claim"
+    },
+    {
+      "from": "prac:sufi_dhikr",
+      "to": "sig:delta_theta_entrainment",
+      "type": "CORRELATES_WITH",
+      "evidence_strength": "low",
+      "evidenced_by": [
+        "cite:sufi_dhikr_harvard_osf"
+      ]
+    },
+    {
+      "from": "prac:deity_yoga",
+      "to": "sig:gamma_occipital_bursts",
+      "type": "CORRELATES_WITH",
+      "evidence_strength": "low",
+      "evidenced_by": [
+        "cite:deity_yoga_illusory_ownership_researchgate"
+      ]
+    }
+  ],
+  "notes_for_integration": [
+    "Node ids follow a `type:snake_case_name` convention to match darshana-graph / buddhist-philosophy-graph patterns; adjust prefixes if those graphs use a different convention.",
+    "evidence_strength is mandatory on CORRELATES_WITH, MEDIATED_BY, EXPLAINED_BY edges so that thin-evidence claims (Seon hwadu, nembutsu, dhikr) are queryable and filterable separately from the well-evidenced core (Jhana, Vipassana, Dzogchen).",
+    "ANALOGOUS_TO edges exist specifically to make explicit when a practice is being provisionally mapped onto a better-evidenced neighbor rather than having its own dedicated findings — this prevents silently smuggling in Vipassana's evidence as if it were hwadu's own.",
+    "Citation nodes carry sample_size and study_design so queries can filter for e.g. 'exclude n=1 case studies' when assessing how much weight a claim should bear.",
+    "CognitiveOperation nodes exist because Young et al. 2021 found no power-spectra differences between six traditions compared head-to-head — practices that look orthogonal phenomenologically can share low-level EEG signatures. The EMPLOYS edge lets the graph represent 'these two traditions differ doctrinally but share a cognitive operation' without that being read as a contradiction.",
+    "Finding nodes + CAVEATED_BY edges exist so a null or complicating result can be attached directly to the claim it qualifies, rather than either (a) silently dropped, or (b) used to delete a real doctrinal/phenomenological distinction that the null result doesn't actually disprove — orthogonality here means phenomenologically/doctrinally distinct, not necessarily neurally separable at the power-spectrum level.",
+    "Do not add specific novel Practice-to-NeuralSignature CORRELATES_WITH edges (e.g. 'hwadu -> high permutation entropy', 'nembutsu -> Sufi fanā' pathway') unless backed by an actual Citation node — several such mappings proposed in outside brainstorming documents were stated as settled fact without a supporting study, and should stay as ANALOGOUS_TO (confidence: low) or theoretical_only CORRELATES_WITH edges instead."
+  ],
+  "phase_2_deferred_scope": {
+    "status": "documented, not built — out of scope until after the July 28 job-search deadline",
+    "rationale": "Expanding to the full multi-tradition, sub-practice-level ontology proposed in outside brainstorming (10+ traditions down to individual techniques) is a multi-month ontology-engineering project, not an incremental addition. Building it now would compete directly with GE HealthCare prep, Evernorth, Virtusa, and the two in-flight papers (GroundTruthMI, SDM rank-order).",
+    "candidate_future_traditions_and_subpractices": {
+      "Nyingma": [
+        "shamatha",
+        "trekchö",
+        "tögal",
+        "semdzin",
+        "rushen",
+        "guru yoga",
+        "deity yoga",
+        "tsa-lung",
+        "ngondro"
+      ],
+      "Theravada": [
+        "access concentration",
+        "rupa jhana",
+        "arupa jhana",
+        "dry insight",
+        "noting (Mahasi)",
+        "body scanning (Goenka)",
+        "cessation"
+      ],
+      "Zen": [
+        "shikantaza (Soto)",
+        "koan/hwadu (Rinzai)",
+        "counting breath",
+        "silent illumination (Chan)"
+      ],
+      "Pure_Land": [
+        "nembutsu (Jodo Shinshu)",
+        "other-power devotion",
+        "continuous recollection",
+        "daimoku (Nichiren, distinct lineage)"
+      ],
+      "Shambhala": [
+        "shamatha with support",
+        "shamatha without support",
+        "open awareness"
+      ],
+      "Kagyu": [
+        "Mahamudra"
+      ]
+    },
+    "recommended_reentry_point": "Revisit after July 28. The cognitive-operations axis added in this version is designed to scale to these additions without re-architecting the schema — new Practice nodes can attach EMPLOYS edges to the existing CognitiveOperation set, or add new operations, without touching existing nodes."
+  }
+}
