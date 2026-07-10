@@ -38,7 +38,9 @@ data/
 scripts/
   ingest_contemplative_graph.py               # loads the JSON into FalkorDB
 paper/
-  Meditation_Taxonomy_IEEE_plain.docx          # companion paper, IEEE-style
+  Meditation_Knowledge_Graph_Ontology_v3b.docx # companion paper (master version)
+  ontology_pipeline_figure.png                 # Figure 1
+  graph_excerpt_figure.png                     # Figure 2
 ```
 
 ## Ontology schema
