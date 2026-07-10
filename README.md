@@ -130,7 +130,7 @@ studies to test, not settled findings.
 If you use this graph or the accompanying paper, please cite:
 
 Bose, J. "A Taxonomy of Contemplative States: Matching Brain Signals to What
-Practitioners Actually Experience." Independent researcher preprint, 2026.
+Practitioners Actually Experience.", 2026.
 
 ## License
 
