@@ -34,7 +34,7 @@ undermining a real phenomenological distinction.
 
 ```
 data/
-  contemplative_neuroscience_ontology.json   # the graph: 54 nodes, 27 edges
+  contemplative_neuroscience_ontology.json   # the graph: 59 nodes, 42 edges
 scripts/
   ingest_contemplative_graph.py               # loads the JSON into FalkorDB
 paper/
@@ -105,10 +105,19 @@ mistakes the placement for an established result.
 
 ## Status and scope
 
-Six traditions are built out. A much larger scope (Nyingma sub-practices
-down to tsa-lung and ngondro, Theravada's full progression, the four Zen
-styles, Shambhala, Mahamudra) is documented but deliberately deferred, see
-`phase_2_deferred_scope` in the JSON.
+All six traditions now have complete structural coverage: every Practice
+node has a PRACTICED_WITHIN edge to its Tradition, a PRODUCES edge to its
+PhenomenologicalState, and (except hwadu investigation, where none exists
+yet) a CORRELATES_WITH edge to a NeuralSignature with an explicit evidence
+strength. Earlier versions of this graph only had this full wiring for the
+two most recently added traditions (Korean Seon, Jodo Shinshu); the four
+original traditions have since been brought up to the same standard, with
+citations added for each new edge.
+
+A much larger scope (Nyingma sub-practices down to tsa-lung and ngondro,
+Theravada's full progression, the four Zen styles, Shambhala, Mahamudra) is
+documented but deliberately deferred, see `phase_2_deferred_scope` in the
+JSON.
 
 Korean Seon and Jodo Shinshu are explicitly marked `low` / `theoretical_only`
 evidence strength throughout. Treat those two as hypotheses for future
